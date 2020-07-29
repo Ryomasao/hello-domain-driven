@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+  web:
+    build: ./web
+    volumes: 
+        - ./src:/var/www/html
+        - ./web/php/php.ini:/usr/local/etc/php/php.ini
+        - ./web/httpd/sites-available:/etc/apache2/sites-available
+    ports:
+        - "8000:80"
+    working_dir: /var/www/html
+    depends_on:
+      - db
+  db:
+    build: ./db
+    env_file: ./db/.env
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db/conf:/etc/mysql/conf.d
+      - db-data:/var/lib/mysql
+volumes:
+    db-data:

@@ -1,0 +1,14 @@
+{
+    "intelephense.environment.phpVersion": "7.4.7",
+    "intelephense.diagnostics.undefinedClassConstants": false,
+    "intelephense.diagnostics.undefinedTypes": false,
+    "[php]": {
+      "editor.formatOnSave": true
+    },
+    "[blade]": {
+      "editor.formatOnSave": true
+    },
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    }
+}

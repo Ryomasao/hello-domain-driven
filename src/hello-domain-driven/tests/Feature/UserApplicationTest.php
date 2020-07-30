@@ -42,9 +42,10 @@ class UserApplicationTest extends TestCase
         $this->application->register('jirou', 'b@b.com');
     }
 
-    //public function test_get_user()
-    //{
-    //    $this->application->register('savedMan', 'c@c.com');
-    //    $this->application->get('jirou', 'b@b.com');
-    //}
+    public function test_get_user()
+    {
+        $createdUser = $this->application->register('savedMan', 'c@c.com');
+        $fetchedUser = $this->application->get($createdUser->id()->value());
+        $this->assertInstanceOf('MyDomain\Entities\User', $fetchedUser);
+    }
 }

@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-use MyDomain\Application\UserApplicationService;
+use MyDomain\Application\User\UserApplicationService;
 use MyDomain\Services\UserService;
 use MyDomain\Repositories\UserRepository\UserEloquentRepository;
 
@@ -32,6 +32,9 @@ class UserApplicationTest extends TestCase
     public function test_create_user()
     {
         $this->application->register('tarou', 'a@a.com');
+        // Repositoryでテストしてるから、このレイヤーでdatabase検証は微妙な気がする
+        // Application層では、RepositoryをInMemoryとかに置き換えればいいのかな
+        // でもphpUnitのレイヤーでmemoryになってるんだよね
         $this->assertDatabaseHas('users', ['name' => 'tarou', 'email' => 'a@a.com']);
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace MyDomain\Application;
+namespace MyDomain\Application\User;
 
 use MyDomain\Repositories\UserRepository\IUserRepository;
 use MyDomain\Services\UserService;
@@ -8,6 +8,7 @@ use MyDomain\Entities\User;
 use MyDomain\Values\UserName;
 use MyDomain\Values\UserId;
 use MyDomain\Dto\UserData;
+use MyDomain\Application\User\UserDeleteCommand;
 
 class UserApplicationService
 {
@@ -76,6 +77,17 @@ class UserApplicationService
         }
 
         return null;
+    }
+
+    public function delete(UserDeleteCommand $command): void
+    {
+        $user = $this->userRepository->findById(new UserId($command->id));
+
+        if ($user === null) {
+            throw new \Exception('user not found');
+        }
+
+        $this->userRepository->delete($user);
     }
 
     private function toDto(User $from): UserData

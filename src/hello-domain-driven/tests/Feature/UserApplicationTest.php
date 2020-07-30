@@ -37,6 +37,8 @@ class UserApplicationTest extends TestCase
 
     public function test_may_not_create_duplicate_user()
     {
+        // Note
+        // databaseのresetがテストごとに行われないので、ユーザーが重複しないようにする必要がある。
         $this->expectExceptionMessage('user already exists');
         $this->application->register('jirou', 'b@b.com');
         $this->application->register('jirou', 'b@b.com');
@@ -47,5 +49,18 @@ class UserApplicationTest extends TestCase
         $createdUser = $this->application->register('savedMan', 'c@c.com');
         $fetchedUser = $this->application->get($createdUser->id);
         $this->assertInstanceOf('MyDomain\Dto\UserData', $fetchedUser);
+    }
+
+    public function test_update_user()
+    {
+        $createdUser = $this->application->register('updateMan', 'd@d.com');
+        $this->application->update($createdUser->id, 'changed');
+        $this->assertDatabaseHas('users', ['name' => 'changed', 'email' => 'd@d.com']);
+    }
+
+    public function test_update_non_existent_user_throw_exception()
+    {
+        $this->expectExceptionMessage('user does not exists');
+        $this->application->update('non_existent_user_id', 'changed');
     }
 }

@@ -26,9 +26,41 @@ class UserApplicationService
         $user = new User(new UserName($name), $email);
 
         if ($this->userService->exists($user)) {
-            // 専用のエラークラスをきったほうがいいのかな
+            // Q 専用のエラークラスをきったほうがいいのかな
             throw  new \Exception('user already exists');
         }
+
+        return $this->toDto($this->userRepository->save($user));
+    }
+
+    // Note
+    // 引数が多い場合、UpdateCommandクラスを作るって方法がある。
+    // update(UpdateCommand $command)
+    //
+    public function update(string $userId, string $name = '', string $email = ''): UserData
+    {
+        $targetId = new UserId($userId);
+
+        $user = $this->userRepository->findById($targetId);
+
+        if ($user === null) {
+            // Q
+            throw  new \Exception('user does not exists');
+        }
+
+        if ($name !== '') {
+            $user->changeName(new UserName($name));
+            // TODO nameによるexists
+            //if ($this->userService->exists($user)) {
+            //    throw  new \Exception('user already exists');
+            //}
+        }
+
+        if ($email !== '') {
+            $user->changeEmail($email);
+        }
+
+        // TODO $nameも$emailも空の場合の扱い
 
         return $this->toDto($this->userRepository->save($user));
     }

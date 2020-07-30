@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\Values;
+namespace MyDomain\Values;
 
-class UserName
+class UserId
 {
     protected string $value;
 
@@ -10,10 +10,6 @@ class UserName
     {
         if ($value === '') {
             throw new \InvalidArgumentException('value is required');
-        }
-
-        if (strlen($value) < 3) {
-            throw new \InvalidArgumentException('value length is more than 3 characters');
         }
 
         $this->value = $value;

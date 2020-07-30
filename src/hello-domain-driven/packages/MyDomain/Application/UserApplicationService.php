@@ -7,6 +7,7 @@ use MyDomain\Services\UserService;
 use MyDomain\Entities\User;
 use MyDomain\Values\UserName;
 use MyDomain\Values\UserId;
+use MyDomain\Dto\UserData;
 
 class UserApplicationService
 {
@@ -20,7 +21,7 @@ class UserApplicationService
         $this->userService = $userService;
     }
 
-    public function register(string $name, string $email): User
+    public function register(string $name, string $email): UserData
     {
         $user = new User(new UserName($name), $email);
 
@@ -29,12 +30,24 @@ class UserApplicationService
             throw  new \Exception('user already exists');
         }
 
-        return $this->userRepository->save($user);
+        return $this->toDto($this->userRepository->save($user));
     }
 
-    public function get(string $userId): ?User
+    public function get(string $userId): ?UserData
     {
         $targetId = new UserId($userId);
-        return $this->userRepository->findById($targetId);
+
+        $user = $this->userRepository->findById($targetId);
+
+        if ($user !== null) {
+            return $this->toDto($user);
+        }
+
+        return null;
+    }
+
+    private function toDto(User $from): UserData
+    {
+        return new UserData($from);
     }
 }

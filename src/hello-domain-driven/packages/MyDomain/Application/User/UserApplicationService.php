@@ -51,14 +51,13 @@ class UserApplicationService
 
         if ($name !== '') {
             $user->changeName(new UserName($name));
-            // TODO nameによるexists
-            //if ($this->userService->exists($user)) {
-            //    throw  new \Exception('user already exists');
-            //}
         }
 
         if ($email !== '') {
             $user->changeEmail($email);
+            if ($this->userService->exists($user)) {
+                throw  new \Exception('user already exists');
+            }
         }
 
         // TODO $nameも$emailも空の場合の扱い

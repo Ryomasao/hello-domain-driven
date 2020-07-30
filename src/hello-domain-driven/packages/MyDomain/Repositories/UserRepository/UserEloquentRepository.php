@@ -36,6 +36,17 @@ class UserEloquentRepository implements IUserRepository
         return $this->toModel($target);
     }
 
+    public function findByEmail(string $email): ?User
+    {
+        $target = EloquentUser::where(['email' => $email])->get();
+
+        if ($target === null) {
+            return null;
+        }
+
+        return $this->toModel($target);
+    }
+
     public function delete(User $user): void
     {
         EloquentUser::where('user_id', $user->id()->value())->delete();

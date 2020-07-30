@@ -13,12 +13,16 @@ class User
 
     protected string $email;
 
-    public function __construct(UserName $name, string $email)
+    public function __construct(UserName $name, string $email, UserId $id = null)
     {
         $this->name = $name;
 
-        $randomId = \Carbon\Carbon::now()->toDateTimeString();
-        $this->id = new UserId($randomId);
+        if ($id === null) {
+            $randomId = \Carbon\Carbon::now()->toDateTimeString();
+            $this->id = new UserId($randomId);
+        } else {
+            $this->id = $id;
+        }
 
         if ($email === '') {
             return new \InvalidArgumentException('email is required.');

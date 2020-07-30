@@ -9,5 +9,5 @@ interface IUserRepository
 {
     public function save(User $user): void;
 
-    public function find(UserId $userId): ?User;
+    public function findById(UserId $userId): ?User;
 }

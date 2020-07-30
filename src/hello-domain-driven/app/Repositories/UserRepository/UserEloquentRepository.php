@@ -23,7 +23,7 @@ class UserEloquentRepository implements IUserRepository
         );
     }
 
-    public function find(UserId $userId): ?User
+    public function findById(UserId $userId): ?User
     {
         $target = UserEloquent::find($userId->value());
 

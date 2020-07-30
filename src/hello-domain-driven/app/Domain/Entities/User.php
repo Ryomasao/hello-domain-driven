@@ -45,4 +45,9 @@ class User
     {
         return $this->email;
     }
+
+    public function changeName(UserName $name): void
+    {
+        $this->name = $name;
+    }
 }

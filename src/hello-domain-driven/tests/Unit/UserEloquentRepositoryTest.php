@@ -38,4 +38,17 @@ class UserEloquentRepositoryTest extends TestCase
 
         $this->assertDatabaseHas('users', ['name' =>  $user->name()->value()]);
     }
+
+    public function test_delete()
+    {
+        $savedUser = factory(EloquentUser::class)->create();
+        $repository = new UserEloquentRepository();
+        $user = new User(
+            new UserName($savedUser->name),
+            $savedUser->email,
+            new UserId($savedUser->user_id)
+        );
+        $repository->delete($user);
+        $this->assertDatabaseMissing('users', ['name' =>  $user->name()->value()]);
+    }
 }

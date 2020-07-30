@@ -6,10 +6,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 use App\Models\Eloquent\User as EloquentUser;
-use App\Repositories\UserRepository\UserEloquentRepository;
-use App\Domain\Entities\User;
-use App\Domain\Values\UserName;
-use App\Domain\Values\UserId;
+use MyDomain\Repositories\UserRepository\UserEloquentRepository;
+use MyDomain\Entities\User;
+use MyDomain\Values\UserName;
+use MyDomain\Values\UserId;
 
 // Eloquentに依存する部分はLaravelのTestCaseに依存していいと思う
 class UserEloquentRepositoryTest extends TestCase

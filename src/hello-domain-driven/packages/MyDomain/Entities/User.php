@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Domain\Entities;
+namespace MyDomain\Entities;
 
-use App\Domain\Values\UserName;
-use App\Domain\Values\UserId;
+use MyDomain\Values\UserName;
+use MyDomain\Values\UserId;
 
 class User
 {

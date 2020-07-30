@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Repositories\UserRepository;
+namespace MyDomain\Repositories\UserRepository;
 
-use App\Domain\Entities\User;
-use App\Domain\Values\UserName;
-use App\Domain\Values\UserId;
+use MyDomain\Entities\User;
+use MyDomain\Values\UserName;
+use MyDomain\Values\UserId;
 use App\Models\Eloquent\User as EloquentUser;
 
 class UserEloquentRepository implements IUserRepository
 {
-    public function save(User $user): void
+    public function save(User $user): User
     {
-        EloquentUser::updateOrCreate(
+        $user = EloquentUser::updateOrCreate(
             [
                 'user_id' => $user->id()->value(),
             ],
@@ -21,6 +21,8 @@ class UserEloquentRepository implements IUserRepository
                 'email' => $user->email(),
             ]
         );
+
+        return $this->toModel($user);
     }
 
     public function findById(UserId $userId): ?User
@@ -39,8 +41,12 @@ class UserEloquentRepository implements IUserRepository
         EloquentUser::where('user_id', $user->id()->value())->delete();
     }
 
-    private function toModel(UserEloquent $from)
+    private function toModel(EloquentUser $from): User
     {
-        return new User(new UserName($from->name), $from->email);
+        return new User(
+            new UserName($from->name),
+            $from->email,
+            $from->user_id ? new UserId($from->user_id) : null
+        );
     }
 }
